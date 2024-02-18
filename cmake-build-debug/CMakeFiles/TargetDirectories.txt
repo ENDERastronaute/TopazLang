@@ -1,0 +1,3 @@
+/home/leny/projects/clion/TopazLang/cmake-build-debug/CMakeFiles/TopazLang.dir
+/home/leny/projects/clion/TopazLang/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/leny/projects/clion/TopazLang/cmake-build-debug/CMakeFiles/rebuild_cache.dir
