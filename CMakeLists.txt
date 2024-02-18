@@ -12,8 +12,6 @@ add_executable(TopazLang main.cpp
         headers/Token.h
         AST.cpp
         headers/AST.h
-        ConfigManager.cpp
-        headers/ConfigManager.h
         FileManager.cpp
         headers/FileManager.h
         Console.cpp

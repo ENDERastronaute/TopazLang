@@ -10,7 +10,7 @@
 #include <atomic>
 
 struct Console {
-    static void progressBar(std::atomic<float>&, std::atomic<bool>&);
+    static void progressBar(std::atomic<float>&, int);
 };
 
 

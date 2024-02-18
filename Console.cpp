@@ -4,7 +4,7 @@
 
 #include "Console.h"
 
-void Console::progressBar(std::atomic<float> &progress, std::atomic<bool> &finished) {
+void Console::progressBar(std::atomic<float> &progress, int total) {
     int barWidth = 70;
     int pos;
     float lastProgress = progress;
@@ -26,7 +26,7 @@ void Console::progressBar(std::atomic<float> &progress, std::atomic<bool> &finis
 
             lastProgress = progress;
         }
-    } while (!finished);
+    } while (progress < (float) total);
 
     std::cout << '\n';
 }

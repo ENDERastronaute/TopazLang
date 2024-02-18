@@ -25,7 +25,7 @@ int main() {
     std::atomic<float> lexingProgress(0);
     uintmax_t lexingTotal = std::filesystem::file_size(source);
 
-    std::thread progressbar(Console::progressBar, std::ref(lexingProgress), std::ref());
+    std::thread progressbar(Console::progressBar, std::ref(lexingProgress), 10);
 
     while (std::getline(file, line)) {
         Lexer::tokenize(tokens);
