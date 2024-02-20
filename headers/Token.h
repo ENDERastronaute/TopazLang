@@ -5,17 +5,20 @@
 #ifndef TOPAZLANG_TOKEN_H
 #define TOPAZLANG_TOKEN_H
 
+#include <string>
 
-class Token {
-public:
+
+struct Token {
     enum Type {
         WHITESPACE,
+        NUMBER,
+        KEYWORD,
+        ALPHA,
         EOF_
     };
 
-    Token();
-
     Type type;
+    std::string value;
 };
 
 

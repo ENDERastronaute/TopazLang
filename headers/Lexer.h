@@ -8,10 +8,23 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <algorithm>
 #include "Token.h"
 
 struct Lexer {
-    static void tokenize(std::vector<Token>&);
+    Lexer(std::vector<Token>&, const std::string&);
+
+    void tokenize();
+
+private:
+    static inline constexpr std::string keywords[3] = {
+            "import",
+            "export",
+            "function"
+    };
+
+    static void makeNumber();
+    static void makeAlpha();
 };
 
 

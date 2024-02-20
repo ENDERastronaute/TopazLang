@@ -27,7 +27,9 @@ int main() {
 
     std::thread progressbar(Console::progressBar, std::ref(lexingProgress), 10);
 
+    Lexer lexer(tokens, "");
+
     while (std::getline(file, line)) {
-        Lexer::tokenize(tokens);
+        lexer = Lexer(tokens, line);
     }
 }
