@@ -12,9 +12,7 @@
 #include "Token.h"
 
 struct Lexer {
-    Lexer(std::vector<Token>&, const std::string&);
-
-    void tokenize();
+    static void tokenize(std::vector<Token>&, const std::string&);
 
 private:
     static inline constexpr std::string keywords[3] = {
@@ -22,9 +20,6 @@ private:
             "export",
             "function"
     };
-
-    static void makeNumber();
-    static void makeAlpha();
 };
 
 

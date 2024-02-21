@@ -19,6 +19,9 @@ struct Token {
 
     Type type;
     std::string value;
+    int startPos;
+    int endPos;
+    std::string line;
 };
 
 

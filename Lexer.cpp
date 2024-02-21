@@ -4,48 +4,48 @@
 
 #include "Lexer.h"
 
-Lexer::Lexer(std::vector<Token> &tokens, const std::string& line) : tokens(tokens), line(line) {}
+void Lexer::tokenize(std::vector<Token>& tokens, const std::string& line) {
+    char current;
+    int currentPos = 0;
+    int startPos;
+    std::string temp;
 
-void Lexer::tokenize() {
-    while (currentPos < line.length())
-    {
+    while (currentPos < line.length()) {
         current = line[currentPos];
+        startPos = currentPos;
 
-        if (isdigit(current))
-        {
-            makeNumber();
+        if (current == ' ' || current == '\n') {
+            currentPos++;
+            temp = current;
+            tokens.emplace_back(Token::WHITESPACE, temp, startPos, currentPos, line);
+
+        } else if (isdigit(current)) {
+            temp.clear();
+
+            do {
+                temp += line[currentPos];
+                currentPos++;
+            } while (isdigit(line[currentPos]) || line[currentPos] == '.');
+
+            tokens.emplace_back(Token::NUMBER, temp, startPos, currentPos, line);
+
+        } else if (isalpha(current)) {
+            temp.clear();
+
+            do {
+                temp += line[currentPos];
+                currentPos++;
+            } while (isalpha(line[currentPos]));
+
+            if (std::binary_search(std::begin(keywords), std::end(keywords), temp)) {
+                tokens.emplace_back(Token::KEYWORD, temp, startPos, currentPos, line);
+                return;
+            }
+
+            tokens.emplace_back(Token::ALPHA, temp, startPos, currentPos, line);
+
         }
-        else if (isalpha(current))
-        {
-            makeAlpha();
-        }
-
-    }
-}
-
-void Lexer::makeNumber() {
-    temp.clear();
-
-    do {
-        temp += line[currentPos];
-        currentPos++;
-    } while (isdigit(line[currentPos]) || line[currentPos] == '.');
-
-    tokens.emplace_back(Token::NUMBER, temp);
-}
-
-void Lexer::makeAlpha() {
-    temp.clear();
-
-    do {
-        temp += line[currentPos];
-        currentPos++;
-    } while (isalpha(line[currentPos]));
-
-    if (std::binary_search(std::begin(keywords), std::end(keywords), temp)) {
-        tokens.emplace_back(Token::KEYWORD, temp);
-        return;
     }
 
-    tokens.emplace_back(Token::ALPHA, temp);
+    tokens.emplace_back(Token::EOF_, "", startPos, currentPos);
 }
