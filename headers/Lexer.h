@@ -8,17 +8,18 @@
 #include <vector>
 #include <string>
 #include <fstream>
-#include <algorithm>
+#include <unordered_map>
 #include "Token.h"
 
 struct Lexer {
     static void tokenize(std::vector<Token>&, const std::string&);
 
 private:
-    static inline constexpr std::string keywords[3] = {
-            "import",
-            "export",
-            "function"
+    static inline std::unordered_map<std::string, int> keywords {
+        {"import", 1},
+        {"export", 1},
+        {"function", 1},
+        {"class", 1}
     };
 };
 

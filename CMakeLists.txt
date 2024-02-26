@@ -12,10 +12,12 @@ add_executable(TopazLang main.cpp
         headers/Token.h
         AST.cpp
         headers/AST.h
-        FileManager.cpp
-        headers/FileManager.h
         Console.cpp
         headers/Console.h
+        Manager.cpp
+        headers/Manager.h
+        SymbolTable.cpp
+        headers/SymbolTable.h
 )
 
 target_include_directories(TopazLang PUBLIC headers)

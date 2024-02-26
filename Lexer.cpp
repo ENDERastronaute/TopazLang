@@ -17,7 +17,8 @@ void Lexer::tokenize(std::vector<Token>& tokens, const std::string& line) {
         if (current == ' ' || current == '\n') {
             currentPos++;
             temp = current;
-            tokens.emplace_back(Token::WHITESPACE, temp, startPos, currentPos, line);
+            tokens.emplace_back(Token::WHITESPACE, temp, startPos, currentPos - 1, line);
+            temp = "";
 
         } else if (isdigit(current)) {
             temp.clear();
@@ -27,7 +28,8 @@ void Lexer::tokenize(std::vector<Token>& tokens, const std::string& line) {
                 currentPos++;
             } while (isdigit(line[currentPos]) || line[currentPos] == '.');
 
-            tokens.emplace_back(Token::NUMBER, temp, startPos, currentPos, line);
+            tokens.emplace_back(Token::NUMBER, temp, startPos, currentPos - 1, line);
+            temp = "";
 
         } else if (isalpha(current)) {
             temp.clear();
@@ -37,14 +39,110 @@ void Lexer::tokenize(std::vector<Token>& tokens, const std::string& line) {
                 currentPos++;
             } while (isalpha(line[currentPos]));
 
-            if (std::binary_search(std::begin(keywords), std::end(keywords), temp)) {
-                tokens.emplace_back(Token::KEYWORD, temp, startPos, currentPos, line);
+            if (keywords[temp]) {
+                tokens.emplace_back(Token::KEYWORD, temp, startPos, currentPos - 1, line);
+
+                temp = "";
                 return;
             }
 
-            tokens.emplace_back(Token::ALPHA, temp, startPos, currentPos, line);
+            tokens.emplace_back(Token::ALPHA, temp, startPos, currentPos - 1, line);
+            temp = "";
 
         }
+        else if (current == '+') {
+            currentPos++;
+
+            if (line[currentPos] == '+') {
+                currentPos++;
+                tokens.emplace_back(Token::INC, "++", startPos, currentPos - 1, line);
+                return;
+            }
+
+            else if (line[currentPos] == '=') {
+                currentPos++;
+                tokens.emplace_back(Token::ADQ, "+=", startPos, currentPos - 1, line);
+                return;
+            }
+
+            tokens.emplace_back(Token::ADD, "+", startPos, currentPos - 1, line);
+        }
+        else if (current == '-') {
+            currentPos++;
+
+            if (line[currentPos] == '-') {
+                currentPos++;
+                tokens.emplace_back(Token::DEC, "--", startPos, currentPos - 1, line);
+                return;
+            }
+            else if (line[currentPos] == '=') {
+                currentPos++;
+                tokens.emplace_back(Token::SUQ, "-=", startPos, currentPos - 1, line);
+                return;
+            }
+
+            tokens.emplace_back(Token::SUB, "-", startPos, currentPos - 1, line);
+        }
+        else if (current == '*') {
+            currentPos++;
+
+            if (line[currentPos] == '=') {
+                currentPos++;
+                tokens.emplace_back(Token::MUQ, "*=", startPos, currentPos - 1, line);
+                return;
+            }
+            else if (line[currentPos] == '*') {
+                currentPos++;
+
+                if (line[currentPos] == '=') {
+                    currentPos++;
+                    tokens.emplace_back(Token::SQQ, "**=", startPos, currentPos - 1, line);
+                    return;
+                }
+
+                tokens.emplace_back(Token::SQR, "**", startPos, currentPos - 1, line);
+                return;
+            }
+
+            tokens.emplace_back(Token::MLT, "*", startPos, currentPos - 1, line);
+        }
+        else if (current == '/') {
+            currentPos++;
+
+            if (line[currentPos] == '/') {
+                do {
+                    currentPos++;
+                }
+                while (line[currentPos] != '\n');
+                return;
+            }
+            else if (line[currentPos] == '*') {
+                do {
+                    currentPos++;
+                }
+                while (line[currentPos] != '/' && line[++currentPos] != '*');
+                return;
+            }
+            else if (line[currentPos] == '=') {
+                currentPos++;
+                tokens.emplace_back(Token::DIQ, "/=", startPos, currentPos - 1, line);
+                return;
+            }
+
+            tokens.emplace_back(Token::DIV, "/", startPos, currentPos - 1, line);
+        }
+        else if (current == '%') {
+            currentPos++;
+
+            if (line[currentPos] == '=') {
+                currentPos++;
+                tokens.emplace_back(Token::MOQ, "%=", startPos, currentPos - 1, line);
+                return;
+            }
+
+            tokens.emplace_back(Token::MOD, "%", startPos, currentPos - 1, line);
+        }
+
     }
 
     tokens.emplace_back(Token::EOF_, "", startPos, currentPos);

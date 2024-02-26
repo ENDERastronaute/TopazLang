@@ -1,9 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include <filesystem>
 #include <vector>
 #include <memory>
-#include <atomic>
 #include <thread>
 #include "Console.h"
 #include "AST.h"
@@ -22,10 +20,6 @@ int main() {
     }
 
     std::string line;
-    std::atomic<float> lexingProgress(0);
-    uintmax_t lexingTotal = std::filesystem::file_size(source);
-
-    std::thread progressbar(Console::progressBar, std::ref(lexingProgress), lexingTotal);
 
     while (std::getline(file, line)) {
         Lexer::tokenize(tokens, line);
